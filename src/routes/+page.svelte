@@ -13,7 +13,7 @@
 		<h2 class="text-white text-xl m-2">Popular movies</h2>
 		<div class="grid grid-cols-6">
 			{#each slicedMovie as movie}
-				<a class="m-2 hover:scale-105 hover:transition-all z-10" href="/movies/{movie.id}"><Card image={movie.poster_path} title={movie.title}/></a>
+				<a class="m-2 hover:scale-105 hover:transition-all z-10" href="/movies/{movie.id}"><Card image={movie.poster_path} title={movie.title} id={movie.id}/></a>
 			{/each}
 		</div>
 	</div>
@@ -22,8 +22,8 @@
 		<h2 class="text-white text-xl m-2">Popular TV series</h2>
 		<div class="grid grid-cols-6">
 			{#each slicedSeries as series}
-				<a class="m-2 hover:scale-105 hover:transition-all z-10" href="/series/{series.id}"><Card image={series.poster_path} title={series.title}/></a>
-			{/each}
+				<a class="m-2 hover:scale-105 hover:transition-all z-10" href="/series/{series.id}"><Card image={series.poster_path} title={series.title} id={series.id}/></a>
+			{/each} 
 		</div>
 	</div>
 </section>
