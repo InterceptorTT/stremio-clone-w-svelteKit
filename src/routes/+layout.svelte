@@ -4,10 +4,17 @@
     import Navbar from "$lib/components/navbar.svelte"
 </script>
 
-<main class="w-full h-full p-4 px-8  bg-gradient-to-r from-black via-black to-blue-900">
-    <Header/>
+<main class="relative ">
+        <Header/>    
     <div class="flex">
-        <Navbar/>
-        <slot/>
+        <div>
+            <Navbar/>
+        </div>
+        <div class="p-32">
+            <slot/>
+        </div>
     </div>
 </main>
+
+<style>
+</style>
