@@ -4,17 +4,14 @@
     import Navbar from "$lib/components/navbar.svelte"
 </script>
 
-<main class="relative ">
+<main class="">
         <Header/>    
     <div class="flex">
         <div>
             <Navbar/>
         </div>
-        <div class="p-32">
+        <div class="pt-32 sm:px-24 md:px-28 lg:px-28">
             <slot/>
         </div>
     </div>
 </main>
-
-<style>
-</style>

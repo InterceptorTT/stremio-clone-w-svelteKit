@@ -21,12 +21,10 @@
 	}
 </script>
 
-<section class="w-full">
-	<h2 class="text-white text-xl m-2">
-		Search for : {$page.params.media_type} & {$page.params.actual}
-	</h2>
-	<div class="grid grid-cols-2 gap-10">
-		<div class="grid grid-cols-3">
+<section class="w-full relative">
+	<h2 class="text-white text-xl m-2"></h2>
+	<div class="grid grid-cols-5 gap-5">
+		<div class="col-span-3 grid grid-cols-4 gap-5">
 			{#each searchedResults as movie}
 				<button on:click={handleCardClick} class="m-2 hover:scale-105 hover:transition-all z-10"
 					><Card
@@ -37,26 +35,21 @@
 				>
 			{/each}
 		</div>
-		<div class="rounded-lg">
-			{#if loading}
-				<h1>Loading...</h1>
-			{/if}
+		<div class="col-span-2 w-full h-full">
 			{#if dataCard}
 				<div
-					class="h-full bg-contain bg-no-repeat blur-md bg-scroll"
-					style="background-image: url('https://image.tmdb.org/t/p/w500{dataCard.poster_path}')"
-				>
-                <a href={media_type == "movie" ? "/movies" : "/series" /dataCard.id}>
-                    <h1 class="">{dataCard.title || dataCard.name}</h1>
-                    <div>
-                        <h2>{dataCard.runtime}</h2>
-                        <h2>{dataCard.release_date.slice(-4)}</h2>
-                        <h2>{dataCard.vote_average}</h2>
-                    </div>
-                </a>
-                </div>
+					class="rounded-3xl h-full bg-contain bg-no-repeat relative"
+					style="background-image: url('https://image.tmdb.org/t/p/w500{dataCard.poster_path}')">
+					<a href={media_type == 'movie' ? `/movies/${dataCard.id}` : `/series/${dataCard.id}`} class="absolute inset-0 backdrop-blur-md rounded-xl backdrop-brightness-25">
+						<h1 class="text-white text-center backdrop-blur-sm text-4xl mt-4">{dataCard.title}</h1>
+						<div class="flex justify-evenly">
+							<h2 class="text-white backdrop-blur-sm">{dataCard.runtime} min</h2>
+							<h2 class="text-white backdrop-blur-sm">{dataCard.release_date.slice(0, 4)}</h2>
+							<h2 class="text-white backdrop-blur-sm">{dataCard.vote_average} imdb vote</h2>
+						</div>
+					</a>
+				</div>
 			{/if}
 		</div>
 	</div>
 </section>
-
