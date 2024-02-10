@@ -3,12 +3,13 @@
 	import add from '$lib/assets/add.png';
 	import play from '$lib/assets/play.png';
 	import imdb from '$lib/assets/imdb.png';
-	import { page } from '$app/stores';
 	import Card from '$lib/components/card.svelte';
+	import { page } from '$app/stores';
 	export let data;
 	$: searchedResults = data.searchResults.results;
 	$: media_type = $page.params.media_type;
 	let dataCard;
+	
 
 	async function handleCardClick(e) {
 		const id = e.target.id;
@@ -17,6 +18,14 @@
 		);
 		dataCard = await res.json();
 		console.log(dataCard);
+	}
+
+	function addToLibrary(){
+		let library = localStorage.getItem("library") ? JSON.parse(localStorage.getItem("library")) : []
+		library.push(dataCard)
+		localStorage.setItem("library", JSON.stringify(library))
+
+		alert("Saved on library!")
 	}
 </script>
 
@@ -46,13 +55,13 @@
 						<div class="relative">
 							<div class="h-[350px] overflow-y-scroll scrollable_div">
 								<h1 class="text-white text-center backdrop-blur-sm text-4xl mt-5 font-black">
-									{dataCard.title}
+									{dataCard.title || dataCard.name}
 								</h1>
 								<h2 class="text-center text-white mb-5">{dataCard.tagline}</h2>
 								<div class="flex justify-evenly items-center my-10">
 									<h3 class="text-white backdrop-blur-sm font-bold">{dataCard.runtime} min</h3>
 									<h3 class="text-white backdrop-blur-sm font-bold">
-										{dataCard.release_date.slice(0, 4)}
+										{ dataCard.first_air_date || dataCard.release_date}
 									</h3>
 									<h3 class="text-white backdrop-blur-sm font-bold flex items-center gap-3">
 										{dataCard.vote_average} <img src={imdb} alt={imdb} />
@@ -85,7 +94,7 @@
 								</div>
 							</div>
 							<div class="flex justify-evenly items-center translate-y-10">
-								<button class="rounded-full bg-zinc-400 hover:bg-zinc-300 p-2 cursor-pointer"
+								<button on:click={addToLibrary} class="rounded-full bg-zinc-400 hover:bg-zinc-300 p-2 cursor-pointer"
 									><img class="h-6 w-6" src={add} alt={add} /></button
 								>
 								<button class="rounded-full bg-zinc-400 hover:bg-zinc-300 p-2 cursor-pointer"
@@ -114,3 +123,4 @@
 		border-radius: 5px;
 	}
 </style>
+/* */
