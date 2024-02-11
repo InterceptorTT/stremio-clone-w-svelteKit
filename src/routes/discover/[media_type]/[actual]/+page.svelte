@@ -5,11 +5,12 @@
 	import imdb from '$lib/assets/imdb.png';
 	import Card from '$lib/components/card.svelte';
 	import { page } from '$app/stores';
+	import { libraryContent } from '$lib/store.js';
 	export let data;
 	$: searchedResults = data.searchResults.results;
 	$: media_type = $page.params.media_type;
 	let dataCard;
-	
+	let isAlreadyInLibrary;
 
 	async function handleCardClick(e) {
 		const id = e.target.id;
@@ -17,15 +18,21 @@
 			`https://api.themoviedb.org/3/${media_type}/${id}?api_key=966a77059127e7b60ef4f370451e46f5`
 		);
 		dataCard = await res.json();
-		console.log(dataCard);
 	}
 
-	function addToLibrary(){
-		let library = localStorage.getItem("library") ? JSON.parse(localStorage.getItem("library")) : []
-		library.push(dataCard)
-		localStorage.setItem("library", JSON.stringify(library))
+	function addToLibrary() {
+		let library = localStorage.getItem('library')
+			? JSON.parse(localStorage.getItem('library'))
+			: [];
+		isAlreadyInLibrary = library.some((movie) => movie.id === dataCard.id);
 
-		alert("Saved on library!")
+		if (isAlreadyInLibrary) {
+			return alert('Already in the library!');
+		} else {
+			library.push(dataCard) && alert('Saved on library!');
+			localStorage.setItem('library', JSON.stringify(library));
+			libraryContent.update(() => library);
+		}
 	}
 </script>
 
@@ -43,6 +50,15 @@
 			{/each}
 		</div>
 		<div class="col-span-2 w-full">
+			{#if !dataCard}
+				<button on:click={handleCardClick} class="m-2 hover:scale-105 hover:transition-all z-10"
+					><Card
+						image={searchedResults[0].poster_path}
+						title={searchedResults[0].title || searchedResults[0].name}
+						id={searchedResults[0].id}
+					/></button
+				>
+			{/if}
 			{#if dataCard}
 				<div
 					class="rounded-3xl h-full bg-contain bg-no-repeat relative"
@@ -61,7 +77,7 @@
 								<div class="flex justify-evenly items-center my-10">
 									<h3 class="text-white backdrop-blur-sm font-bold">{dataCard.runtime} min</h3>
 									<h3 class="text-white backdrop-blur-sm font-bold">
-										{ dataCard.first_air_date || dataCard.release_date}
+										{dataCard.first_air_date || dataCard.release_date}
 									</h3>
 									<h3 class="text-white backdrop-blur-sm font-bold flex items-center gap-3">
 										{dataCard.vote_average} <img src={imdb} alt={imdb} />
@@ -82,26 +98,30 @@
 									<h4 class="uppercase text-zinc-500">Production companies</h4>
 									<div class="flex flex-wrap gap-5">
 										{#each dataCard.production_companies as company}
-												<div>
-													<img
-														class=""
-														src={'https://image.tmdb.org/t/p/w200' + company.logo_path}
-														alt={company.logo_path}
-													/>
-												</div>
+											<div>
+												<img
+													src={'https://image.tmdb.org/t/p/w200' + company.logo_path}
+													alt={company.logo_path}
+												/>
+											</div>
 										{/each}
 									</div>
 								</div>
 							</div>
-							<div class="flex justify-evenly items-center translate-y-10">
-								<button on:click={addToLibrary} class="rounded-full bg-zinc-400 hover:bg-zinc-300 p-2 cursor-pointer"
-									><img class="h-6 w-6" src={add} alt={add} /></button
-								>
-								<button class="rounded-full bg-zinc-400 hover:bg-zinc-300 p-2 cursor-pointer"
+							<div class="flex justify-evenly items-center translate-y-10 z-10">
+								{#if isAlreadyInLibrary }
+									<button class="text-white">-</button>
+								{/if}
+									<button
+										on:click={addToLibrary}
+										class="rounded-full bg-zinc-400 hover:bg-zinc-300 p-2 cursor-pointer z-50"
+										><img class="h-6 w-6" src={add} alt={add} /></button
+									>								
+								<button class="rounded-full bg-zinc-400 hover:bg-zinc-300 p-2 cursor-pointer z-50"
 									><img class="h-6 w-6" src={ciak} alt={ciak} /></button
 								>
 								<button
-									class="rounded-full bg-zinc-400 p-2 px-4 flex items-center gap-3 text-white hover:bg-green-400 cursor-pointer"
+									class="rounded-full bg-zinc-400 p-2 px-4 flex items-center gap-3 text-white hover:bg-green-400 cursor-pointer z-50"
 									><img class="h-6 w-6" src={play} alt={play} /> Play</button
 								>
 							</div>
@@ -112,6 +132,7 @@
 		</div>
 	</div>
 </section>
+/* */
 
 <style>
 	.scrollable_div::-webkit-scrollbar {
@@ -123,4 +144,3 @@
 		border-radius: 5px;
 	}
 </style>
-/* */

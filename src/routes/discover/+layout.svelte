@@ -11,7 +11,7 @@
 
 <section>
 	<div>
-		<form on:submit|preventDefault={handleSubmit} class="flex justify-start gap-10">
+		<form on:submit|preventDefault={handleSubmit} class="flex justify-start gap-10 py-2 mx-2">
 			<select
 				class="rounded-xl p-2 bg-[#1E1C2E] text-white w-44"
 				on:change|preventDefault={(e) => (type = e.target.value)}
