@@ -12,10 +12,7 @@
 		movie.set(searchedMovie)
 		goto(`/search/${$movie}`)
 	}
-	function handleFullScreen(){
-		const html = document.getElementsByTagName("html")
-		
-	}
+	
 </script>
 
 <header
@@ -29,7 +26,7 @@
 		</form>
 	</div>
 	<div class="flex">
-		<button on:click={handleFullScreen}><img src={fullScreen} alt={fullScreen}/></button>
+		<button><img src={fullScreen} alt={fullScreen}/></button>
 		<button><img src={user} alt={user} /></button>
 	</div>
 </header>

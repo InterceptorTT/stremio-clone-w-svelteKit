@@ -1,4 +1,5 @@
 <script>
+	import AddRemove from "$lib/components/add_remove.svelte"
 	import ciak from '$lib/assets/ciak.png';
 	import add from '$lib/assets/add.png';
 	import play from '$lib/assets/play.png';
@@ -20,7 +21,7 @@
 		dataCard = await res.json();
 	}
 
-	function addToLibrary() {
+	/* function addToLibrary() {
 		let library = localStorage.getItem('library')
 			? JSON.parse(localStorage.getItem('library'))
 			: [];
@@ -33,7 +34,7 @@
 			localStorage.setItem('library', JSON.stringify(library));
 			libraryContent.update(() => library);
 		}
-	}
+	} */
 </script>
 
 <section class="w-full relative">
@@ -69,7 +70,7 @@
 						class="absolute inset-0 backdrop-blur-md rounded-xl backdrop-brightness-50"
 					>
 						<div class="relative">
-							<div class="h-[350px] overflow-y-scroll scrollable_div">
+							<div class="h-[500px] overflow-y-scroll scrollable_div">
 								<h1 class="text-white text-center backdrop-blur-sm text-4xl mt-5 font-black">
 									{dataCard.title || dataCard.name}
 								</h1>
@@ -108,7 +109,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="flex justify-evenly items-center translate-y-10 z-10">
+							<!-- <div class="flex justify-evenly items-center translate-y-10 z-10">
 								{#if isAlreadyInLibrary }
 									<button class="text-white">-</button>
 								{/if}
@@ -124,7 +125,8 @@
 									class="rounded-full bg-zinc-400 p-2 px-4 flex items-center gap-3 text-white hover:bg-green-400 cursor-pointer z-50"
 									><img class="h-6 w-6" src={play} alt={play} /> Play</button
 								>
-							</div>
+							</div> -->
+						
 						</div>
 					</a>
 				</div>

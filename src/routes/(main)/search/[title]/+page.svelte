@@ -26,7 +26,7 @@
 		<div class="grid grid-cols-6">
 			{#each searchedMovie as movie}
 				{#if movie.media_type === 'tv'}
-					<a class="m-2 hover:scale-105 hover:transition-all z-10" href="/movies/{movie.id}"
+					<a class="m-2 hover:scale-105 hover:transition-all z-10" href="/series/{movie.id}"
 						><Card
 							image={movie.poster_path || movie.profile_path}
 							title={movie.title || movie.name}

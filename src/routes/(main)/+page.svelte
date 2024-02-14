@@ -1,10 +1,17 @@
 <script>
+	import {libraryContent} from "$lib/store.js"
+	import { onMount } from "svelte";
 	import Card from '$lib/components/card.svelte';
 	export let data;
 	const movies = data.movies.results;
 	const series = data.series.results;
 	let slicedMovie = movies.slice(0, 6);
 	let slicedSeries = series.slice(0, 6);
+
+	onMount(() => {
+		let elements = JSON.parse(localStorage.getItem('library'));
+		libraryContent.set(elements)
+	});
 	
 </script>
 
@@ -22,7 +29,7 @@
 		<h2 class="text-white text-xl m-2">Popular TV series</h2>
 		<div class="grid grid-cols-6">
 			{#each slicedSeries as series}
-				<a class="m-2 hover:scale-105 hover:transition-all z-10" href="/series/{series.id}"><Card image={series.poster_path} title={series.title} id={series.id}/></a>
+				<a class="m-2 hover:scale-105 hover:transition-all z-10" href="/series/{series.id}"><Card image={series.poster_path} title={series.name} id={series.id}/></a>
 			{/each} 
 		</div>
 	</div>
