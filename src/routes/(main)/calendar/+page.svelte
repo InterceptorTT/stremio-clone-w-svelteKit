@@ -1,27 +1,35 @@
 <script>
-	import { Carousel, Thumbnails } from 'flowbite-svelte';
+	import { Splide, SplideSlide } from '@splidejs/svelte-splide';
+	import Card from '$lib/components/card.svelte';
+	import '@splidejs/svelte-splide/css';
 	export let data;
 	const movies = data.dataMovies.results;
-	const images = movies.map((element) => {
-		return {
-			alt: element.title || element.name,
-			src: `https://image.tmdb.org/t/p/w200${element.poster_path}`
-		};
-	});
-  let index = 0
-  let forward = true
-  let image;
+	function chunkArray(array, chunkSize) {
+		const chunks = [];
+		for (let i = 0; i < array.length; i += chunkSize) {
+			chunks.push(array.slice(i, i + chunkSize));
+		}
+		return chunks;
+	}
+
+	const chuckedArray = chunkArray(movies, 7);
 </script>
 
 <section>
-	<div class="w-full h-96">
-		<Carousel {images} bind:index  imgClass="object-contain h-full w-fit rounded-sm" duration=3000 let:Controls on:change={({ detail }) => (image = detail)}>
-      <Controls/>  
-    </Carousel>
-    <div>
-      <h1 class="text-center text-white">{image?.alt}</h1>
-    </div>
-    <Thumbnails {images} {forward} bind:index />
-
-	</div>
+	<h1 class="text-white">Upcoming movies</h1>
+	<Splide options={ { rewind: true , autoplay: true} } aria-label="My Favorite Images">
+		{#each chuckedArray as chunk}
+			<SplideSlide>
+				<div class="flex flex-nowrap items-center gap-2 w-full">
+					{#each chunk as movie}
+					<div class="">
+						<a class="m-2 hover:scale-105 hover:transition-all z-10" href="/movies/{movie.id}"
+						><Card image={movie.poster_path} title={movie.title} id={movie.id} /></a
+						>
+					</div>
+					{/each}
+				</div>
+			</SplideSlide>
+		{/each}
+	</Splide>
 </section>

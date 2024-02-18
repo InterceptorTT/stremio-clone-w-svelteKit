@@ -1,17 +1,11 @@
 <script>
-	import AddRemove from "$lib/components/add_remove.svelte"
-	import ciak from '$lib/assets/ciak.png';
-	import add from '$lib/assets/add.png';
-	import play from '$lib/assets/play.png';
 	import imdb from '$lib/assets/imdb.png';
 	import Card from '$lib/components/card.svelte';
 	import { page } from '$app/stores';
-	import { libraryContent } from '$lib/store.js';
 	export let data;
 	$: searchedResults = data.searchResults.results;
 	$: media_type = $page.params.media_type;
 	let dataCard;
-	let isAlreadyInLibrary;
 
 	async function handleCardClick(e) {
 		const id = e.target.id;
@@ -20,21 +14,6 @@
 		);
 		dataCard = await res.json();
 	}
-
-	/* function addToLibrary() {
-		let library = localStorage.getItem('library')
-			? JSON.parse(localStorage.getItem('library'))
-			: [];
-		isAlreadyInLibrary = library.some((movie) => movie.id === dataCard.id);
-
-		if (isAlreadyInLibrary) {
-			return alert('Already in the library!');
-		} else {
-			library.push(dataCard) && alert('Saved on library!');
-			localStorage.setItem('library', JSON.stringify(library));
-			libraryContent.update(() => library);
-		}
-	} */
 </script>
 
 <section class="w-full relative">
@@ -109,24 +88,6 @@
 									</div>
 								</div>
 							</div>
-							<!-- <div class="flex justify-evenly items-center translate-y-10 z-10">
-								{#if isAlreadyInLibrary }
-									<button class="text-white">-</button>
-								{/if}
-									<button
-										on:click={addToLibrary}
-										class="rounded-full bg-zinc-400 hover:bg-zinc-300 p-2 cursor-pointer z-50"
-										><img class="h-6 w-6" src={add} alt={add} /></button
-									>								
-								<button class="rounded-full bg-zinc-400 hover:bg-zinc-300 p-2 cursor-pointer z-50"
-									><img class="h-6 w-6" src={ciak} alt={ciak} /></button
-								>
-								<button
-									class="rounded-full bg-zinc-400 p-2 px-4 flex items-center gap-3 text-white hover:bg-green-400 cursor-pointer z-50"
-									><img class="h-6 w-6" src={play} alt={play} /> Play</button
-								>
-							</div> -->
-						
 						</div>
 					</a>
 				</div>
@@ -134,7 +95,6 @@
 		</div>
 	</div>
 </section>
-/* */
 
 <style>
 	.scrollable_div::-webkit-scrollbar {
